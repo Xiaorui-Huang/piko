@@ -15,6 +15,7 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.content.UriPermission;
 import android.os.Build;
+import android.os.Environment;
 import android.os.LocaleList;
 import android.os.storage.StorageManager;
 import android.os.storage.StorageVolume;
@@ -22,6 +23,8 @@ import android.os.storage.StorageVolume;
 import app.morphe.extension.crimera.sharedPreference.SharedPref;
 import app.morphe.extension.crimera.constants.ExtensionStrings;
 import app.morphe.extension.crimera.PikoUtils;
+
+import java.io.File;
 
 public class StorageUtils {
     private static final String KEY_BASE_PATH = "custom_download_path";
@@ -33,6 +36,10 @@ public class StorageUtils {
 
     public static String getCustomPathForDisplay() {
         String storedPath = SharedPref.getStringPref(KEY_BASE_PATH, "");
+        if (canUseDefaultDownloadFolder()
+                && (storedPath.isEmpty() || getDownloadTreeUri() == null)) {
+            return getDefaultDownloadRelativePath();
+        }
         int separatorIndex = storedPath.indexOf(':');
         if (separatorIndex < 0) {
             return storedPath;
@@ -157,6 +164,32 @@ public class StorageUtils {
 
     public static boolean checkStoragePermissions() {
         return getDownloadTreeUri() != null;
+    }
+
+    /** Without a picked folder, API 29+ can still save to Download/ through MediaStore with no permission. */
+    public static boolean canUseDefaultDownloadFolder() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
+    }
+
+    public static String getDefaultDownloadRelativePath() {
+        return Environment.DIRECTORY_DOWNLOADS + "/" + ExtensionStrings.DEFAULT_PIKO_FOLDER;
+    }
+
+    /**
+     * Best-effort creation of Download/<piko folder>, which the folder picker is allowed to grant.
+     * Returns the relative path of the folder the picker should open in.
+     */
+    static String ensureDefaultDownloadFolder() {
+        try {
+            File folder = new File(
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                    ExtensionStrings.DEFAULT_PIKO_FOLDER
+            );
+            if (folder.isDirectory() || folder.mkdirs()) {
+                return getDefaultDownloadRelativePath();
+            }
+        } catch (Exception ignored) {}
+        return Environment.DIRECTORY_DOWNLOADS;
     }
 
     public static Uri getDownloadTreeUri() {

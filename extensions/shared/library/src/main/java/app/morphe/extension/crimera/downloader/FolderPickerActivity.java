@@ -7,9 +7,12 @@
 
 package app.morphe.extension.crimera.downloader;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.storage.StorageManager;
 import android.provider.DocumentsContract;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,30 +23,46 @@ import app.morphe.extension.crimera.constants.ExtensionStrings;
 public class FolderPickerActivity extends AppCompatActivity {
 
     private static final int FOLDER_REQUEST_CODE = 43;
+    private static final String EXTERNAL_STORAGE_AUTHORITY = "com.android.externalstorage.documents";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Direct launch of the system picker upon activity creation
-        requestFolderPermission();
+        // A recreated activity is still waiting on the picker it already launched.
+        if (savedInstanceState == null) {
+            requestFolderPermission();
+        }
     }
 
     public void requestFolderPermission() {
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
-                | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+        try {
+            startActivityForResult(buildTreeIntent(), FOLDER_REQUEST_CODE);
+        } catch (ActivityNotFoundException e) {
+            Logger.printException(() -> "No folder picker available", e);
+            toast(ExtensionStrings.DOWNLOAD_GRANT_PERMISSION_FAILED);
+            finish();
+        }
+    }
 
-        // Hint the system picker to open directly inside the primary volume's
-        // Download folder. Without this, some pickers (observed on stock Pixel
-        // builds) land on the bare device root with no "Download" shortcut in
-        // the side nav, and Android refuses to grant SAF access to top-level
-        // root/volume folders, surfacing "Can't use this folder" everywhere.
-        Uri initialUri = DocumentsContract.buildDocumentUri(
-                "com.android.externalstorage.documents", "primary:Download");
-        intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, initialUri);
+    private Intent buildTreeIntent() {
+        Intent intent = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            StorageManager storageManager = getSystemService(StorageManager.class);
+            if (storageManager != null) {
+                // The platform-built intent also enables the picker's advanced (device storage) roots.
+                intent = storageManager.getPrimaryStorageVolume().createOpenDocumentTreeIntent();
+            }
+        }
+        if (intent == null) {
+            intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        }
 
-        startActivityForResult(intent, FOLDER_REQUEST_CODE);
+        String initialDocumentId = "primary:" + StorageUtils.ensureDefaultDownloadFolder();
+        intent.putExtra(
+                DocumentsContract.EXTRA_INITIAL_URI,
+                DocumentsContract.buildDocumentUri(EXTERNAL_STORAGE_AUTHORITY, initialDocumentId)
+        );
+        return intent;
     }
 
     @Override
@@ -56,8 +75,11 @@ public class FolderPickerActivity extends AppCompatActivity {
                 try {
                     int flags = data.getFlags() & (Intent.FLAG_GRANT_READ_URI_PERMISSION
                             | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                    getContentResolver().takePersistableUriPermission(treeUri,
-                            flags);
+                    if (flags == 0) {
+                        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                                | Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
+                    }
+                    getContentResolver().takePersistableUriPermission(treeUri, flags);
 
                     StorageUtils.saveCustomTreeUri(treeUri);
                     StorageUtils.saveCustomPath(DocumentsContract.getTreeDocumentId(treeUri));

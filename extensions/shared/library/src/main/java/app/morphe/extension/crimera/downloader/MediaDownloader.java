@@ -10,6 +10,8 @@ package app.morphe.extension.crimera.downloader;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.content.Context;
 import android.net.Uri;
@@ -17,6 +19,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -65,7 +68,7 @@ public class MediaDownloader {
     }
 
     public void enqueue(DownloadRequest request) {
-        if (!StorageUtils.checkStoragePermissions()) {
+        if (!StorageUtils.checkStoragePermissions() && !StorageUtils.canUseDefaultDownloadFolder()) {
             StorageUtils.allowStorageAccess();
             return;
         }
@@ -86,6 +89,7 @@ public class MediaDownloader {
         int notificationId = (int) System.currentTimeMillis();
         Uri outputDocumentUri = null;
         boolean downloadCompleted = false;
+        boolean useMediaStore = false;
         Notification.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder = new Notification.Builder(context, CHANNEL_ID);
@@ -101,19 +105,30 @@ public class MediaDownloader {
         notificationManager.notify(notificationId, builder.build());
 
         try {
-            Uri targetDirectoryUri = getTargetDirectoryUri(request);
-            if (findChildDocument(targetDirectoryUri, request.fileName, null) != null) {
-                showToast(ExtensionStrings.DOWNLOAD_MEDIA_EXISTS);
-                notificationManager.cancel(notificationId);
-                return;
-            }
+            Uri treeUri = StorageUtils.getDownloadTreeUri();
+            useMediaStore = treeUri == null && StorageUtils.canUseDefaultDownloadFolder();
+            if (useMediaStore) {
+                if (mediaStoreDownloadExists(request)) {
+                    showToast(ExtensionStrings.DOWNLOAD_MEDIA_EXISTS);
+                    notificationManager.cancel(notificationId);
+                    return;
+                }
+                outputDocumentUri = insertMediaStoreDownload(request);
+            } else {
+                Uri targetDirectoryUri = getTargetDirectoryUri(treeUri, request);
+                if (findChildDocument(targetDirectoryUri, request.fileName, null) != null) {
+                    showToast(ExtensionStrings.DOWNLOAD_MEDIA_EXISTS);
+                    notificationManager.cancel(notificationId);
+                    return;
+                }
 
-            outputDocumentUri = DocumentsContract.createDocument(
-                    context.getContentResolver(),
-                    targetDirectoryUri,
-                    getMimeType(request.fileName),
-                    request.fileName
-            );
+                outputDocumentUri = DocumentsContract.createDocument(
+                        context.getContentResolver(),
+                        targetDirectoryUri,
+                        getMimeType(request.fileName),
+                        request.fileName
+                );
+            }
             if (outputDocumentUri == null) {
                 throw new IOException("Could not create download file");
             }
@@ -162,6 +177,11 @@ public class MediaDownloader {
                     conn.disconnect();
                 }
             }
+            if (useMediaStore) {
+                ContentValues publishValues = new ContentValues();
+                publishValues.put(MediaStore.MediaColumns.IS_PENDING, 0);
+                context.getContentResolver().update(outputDocumentUri, publishValues, null, null);
+            }
             downloadCompleted = true;
 
             final int finalNotificationId = notificationId;
@@ -184,7 +204,11 @@ public class MediaDownloader {
         } catch (Exception e) {
             if (!downloadCompleted && outputDocumentUri != null) {
                 try {
-                    DocumentsContract.deleteDocument(context.getContentResolver(), outputDocumentUri);
+                    if (useMediaStore) {
+                        context.getContentResolver().delete(outputDocumentUri, null, null);
+                    } else {
+                        DocumentsContract.deleteDocument(context.getContentResolver(), outputDocumentUri);
+                    }
                 } catch (Exception ignored) {}
             }
             showToast(ExtensionStrings.DOWNLOAD_ERROR + e.getMessage());
@@ -200,8 +224,48 @@ public class MediaDownloader {
         mainHandler.post(() -> PikoUtils.toast(msg));
     }
 
-    private Uri getTargetDirectoryUri(DownloadRequest request) throws Exception {
-        Uri treeUri = StorageUtils.getDownloadTreeUri();
+    private String getMediaStoreRelativePath(DownloadRequest request) {
+        StringBuilder relativePath = new StringBuilder(StorageUtils.getDefaultDownloadRelativePath());
+        if (request.subFolder != null) {
+            for (String folderName : request.subFolder.split("/")) {
+                if (!folderName.isBlank()) {
+                    relativePath.append('/').append(folderName);
+                }
+            }
+        }
+        // MediaStore stores RELATIVE_PATH with a trailing separator.
+        return relativePath.append('/').toString();
+    }
+
+    private boolean mediaStoreDownloadExists(DownloadRequest request) {
+        String selection = MediaStore.MediaColumns.DISPLAY_NAME + " = ? AND "
+                + MediaStore.MediaColumns.RELATIVE_PATH + " = ?";
+        String[] selectionArgs = {request.fileName, getMediaStoreRelativePath(request)};
+        try (Cursor cursor = context.getContentResolver().query(
+                MediaStore.Downloads.EXTERNAL_CONTENT_URI,
+                new String[]{MediaStore.MediaColumns._ID},
+                selection,
+                selectionArgs,
+                null
+        )) {
+            return cursor != null && cursor.moveToFirst();
+        } catch (Exception e) {
+            PikoUtils.logger(e);
+            return false;
+        }
+    }
+
+    private Uri insertMediaStoreDownload(DownloadRequest request) {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.MediaColumns.DISPLAY_NAME, request.fileName);
+        values.put(MediaStore.MediaColumns.MIME_TYPE, getMimeType(request.fileName));
+        values.put(MediaStore.MediaColumns.RELATIVE_PATH, getMediaStoreRelativePath(request));
+        values.put(MediaStore.MediaColumns.IS_PENDING, 1);
+        ContentResolver resolver = context.getContentResolver();
+        return resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
+    }
+
+    private Uri getTargetDirectoryUri(Uri treeUri, DownloadRequest request) throws Exception {
         if (treeUri == null) {
             throw new IOException("Download folder access is missing");
         }
