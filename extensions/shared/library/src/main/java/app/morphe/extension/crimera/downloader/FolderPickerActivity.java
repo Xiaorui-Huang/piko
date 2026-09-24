@@ -33,6 +33,16 @@ public class FolderPickerActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
                 | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
                 | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+
+        // Hint the system picker to open directly inside the primary volume's
+        // Download folder. Without this, some pickers (observed on stock Pixel
+        // builds) land on the bare device root with no "Download" shortcut in
+        // the side nav, and Android refuses to grant SAF access to top-level
+        // root/volume folders, surfacing "Can't use this folder" everywhere.
+        Uri initialUri = DocumentsContract.buildDocumentUri(
+                "com.android.externalstorage.documents", "primary:Download");
+        intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, initialUri);
+
         startActivityForResult(intent, FOLDER_REQUEST_CODE);
     }
 
