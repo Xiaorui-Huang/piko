@@ -200,6 +200,26 @@ public class DownloadUtils {
         }
     }
 
+    public static void showDownloadMenu(Context context, UserSession userSession, Object mediaObject, int position) {
+        try {
+            position = position < 1 ? 0 : position;
+            downloadDialogBox(context, new MediaData(mediaObject, userSession), position);
+        } catch (Exception e) {
+            PikoUtils.logger(e);
+            Logger.printException(() -> "Error at showDownloadMenu", e);
+        }
+    }
+
+    public static void downloadCurrentMedia(Context context, UserSession userSession, Object mediaObject, int position) {
+        try {
+            position = position < 1 ? 0 : position;
+            downloadMedia(context, new MediaData(mediaObject, userSession), position, MediaType.ANY);
+        } catch (Exception e) {
+            PikoUtils.logger(e);
+            Logger.printException(() -> "Error at downloadCurrentMedia", e);
+        }
+    }
+
     // Position is set to -1 if we want to download all medias from the media info object.
     public static void downloadMedia(Context context, MediaData mediaInfo, int position, MediaType mediaType) throws Exception {
         if(!Utils.isNetworkConnected()){
