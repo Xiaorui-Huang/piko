@@ -170,7 +170,7 @@ val postDownloadButtonsPatch =
                     move-object/from16 v$rA, v$rClick
                     invoke-static { v$rT, v$rA }, $clickRef
                     move-result-object v$rT
-                    invoke-static { }, $POST_UFI_BUTTONS_CLASS->takeLongClickHandler()$FUNCTION1
+                    invoke-static { v$rA }, $POST_UFI_BUTTONS_CLASS->getLongClickHandler($FUNCTION1)$FUNCTION1
                     move-result-object v$rA
                     invoke-static { v$rT, v$rA }, $longClickRef
                     move-result-object v$rT
