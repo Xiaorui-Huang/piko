@@ -69,7 +69,7 @@ To patch with Twitter/X version 11.88 to 12.4, you must include patches from ano
 ## ⚙️ Patch Details
 
 <!-- PATCHES_START -->
-> **[v3.10.0-dev.8](https://github.com/crimera/piko/releases/tag/v3.10.0-dev.8)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;132 patches total
+> **[v3.10.0-personal.1](https://github.com/Xiaorui-Huang/piko/releases/tag/v3.10.0-personal.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`personal`&nbsp;&nbsp;•&nbsp;&nbsp;137 patches total
 <details>
 <summary>📦 Twitter&nbsp;&nbsp;•&nbsp;&nbsp;75 patches</summary>
 <br>
@@ -160,7 +160,7 @@ To patch with Twitter/X version 11.88 to 12.4, you must include patches from ano
 </details>
 
 <details>
-<summary>📦 Instagram&nbsp;&nbsp;•&nbsp;&nbsp;57 patches</summary>
+<summary>📦 Instagram&nbsp;&nbsp;•&nbsp;&nbsp;62 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -184,7 +184,7 @@ To patch with Twitter/X version 11.88 to 12.4, you must include patches from ano
 | [Disable ads](#disable-ads) |  |  |
 | [Disable analytics](#disable-analytics) | Block analytics that are sent to Instagram/Facebook servers. |  |
 | [Disable comments](#disable-comments) |  |  |
-| [Disable discover people](#disable-discover-people) | Disables discover people section on user profile |  |
+| [Disable discover people](#disable-discover-people) | Hides suggested accounts |  |
 | [Disable double tap like](#disable-double-tap-like) | Disable double tap like on post, reel, comment and message |  |
 | [Disable explore](#disable-explore) |  |  |
 | [Disable highlights](#disable-highlights) |  |  |
@@ -199,6 +199,7 @@ To patch with Twitter/X version 11.88 to 12.4, you must include patches from ano
 | [External downloader](#external-downloader) | Adds support to share post links directly to external downloader |  |
 | [Filter stories](#filter-stories) | Filter stories to hide based on different categories |  |
 | [Friendship status indicator](#friendship-status-indicator) | Adds a follows you back status label on the profile page andshows a detailed friendship status breakdown on click |  |
+| [Hide Reels follow button](#hide-reels-follow-button) | Removes the follow button from Reels. |  |
 | [Hide group creation button on sharesheet](#hide-group-creation-button-on-sharesheet) |  |  |
 | [Hide notes tray](#hide-notes-tray) | Hides notes tray in DM section |  |
 | [Hide reshare button](#hide-reshare-button) | Hides the reshare button from both posts and reels. |  |
@@ -206,6 +207,9 @@ To patch with Twitter/X version 11.88 to 12.4, you must include patches from ano
 | [Hide suggested content](#hide-suggested-content) | Hides suggested stories, reels, threads (Suggested posts will still be shown). |  |
 | [Improve image viewing](#improve-image-viewing) | Fetches max resolution images from server. |  |
 | [Limit feed to following profiles](#limit-feed-to-following-profiles) | Filters the home feed to display only content from profiles you follow. |  |
+| [Log Reels to view history](#log-reels-to-view-history) | Records each Reel to Piko's view history as it is shown in the Reels viewer. |  |
+| [Log feed posts to view history](#log-feed-posts-to-view-history) | Records each feed post to Piko's view history once it has been on screen. |  |
+| [Log stories to view history](#log-stories-to-view-history) | Records each story item to Piko's view history as it is shown in the story viewer. |  |
 | [Loop story](#loop-story) | Replay the current story when it ends |  |
 | [Make ephemeral media permanent](#make-ephemeral-media-permanent) | Changes unexpired view once, view twice media to permanent view. |  |
 | [Mark chat as read manually](#mark-chat-as-read-manually) | Adds option to mark a thread aka message as read manually |  |
@@ -224,6 +228,7 @@ To patch with Twitter/X version 11.88 to 12.4, you must include patches from ano
 | [Unlock employee options](#unlock-employee-options) | Unlocks all options using by employee for debugging |  |
 | [Validate links](#validate-links) | Fixes app crashing issue while opening links from a different app |  |
 | [View DMs anonymously](#view-dms-anonymously) |  |  |
+| [View history](#view-history) | Adds a History settings section to browse the feed posts, Reels and Stories you've viewed. |  |
 | [View live anonymously](#view-live-anonymously) |  |  |
 | [View stories anonymously](#view-stories-anonymously) |  |  |
 | [View story mentions](#view-story-mentions) | Add option to view visible and hidden story mentions. |  |
