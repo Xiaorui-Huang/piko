@@ -156,6 +156,8 @@
     <string name="piko_download_file_name_token_type">Type</string>
     <string name="piko_download_file_name_token_carousel_index">Carousel</string>
     <string name="piko_download_file_name_token_variant_suffix">Variant</string>
+    <string name="piko_show_download_progress_toasts">Show download start/complete pop-ups</string>
+    <string name="piko_show_download_progress_toasts_desc">Shows a pop-up when a download starts and when it completes. The persistent download notification is unaffected</string>
     <string name="piko_download_current_media">Download current media</string>
     <string name="piko_download_as_image">Download as image</string>
     <string name="piko_video_variants">Video variants</string>

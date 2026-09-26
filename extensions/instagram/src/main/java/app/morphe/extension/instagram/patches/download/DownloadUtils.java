@@ -226,7 +226,7 @@ public class DownloadUtils {
             Utils.showToastShort(str("piko_no_internet"));
             return;
         }
-        MediaDownloader downloader = new MediaDownloader(context);
+        MediaDownloader downloader = new MediaDownloader(context, Pref.showDownloadProgressToasts());
         String username = mediaInfo.getUserData().getUsername();
         String subFolder = getSubfolderName(username);
 
@@ -366,7 +366,7 @@ public class DownloadUtils {
             Utils.showToastShort(str("piko_no_internet"));
             return;
         }
-        MediaDownloader downloader = new MediaDownloader(context);
+        MediaDownloader downloader = new MediaDownloader(context, Pref.showDownloadProgressToasts());
         downloader.enqueue(request);
     }
 

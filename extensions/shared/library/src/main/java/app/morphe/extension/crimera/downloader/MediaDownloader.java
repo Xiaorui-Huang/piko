@@ -49,9 +49,14 @@ public class MediaDownloader {
     private final LinkedBlockingQueue<DownloadRequest> queue = new LinkedBlockingQueue<>();
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
+    private final boolean showProgressToasts;
     private boolean isDownloading = false;
 
     public MediaDownloader(Context context) {
+        this(context, true);
+    }
+
+    public MediaDownloader(Context context, boolean showProgressToasts) {
         Context resolvedContext = context != null ? context : Utils.getContext();
         if (resolvedContext == null) {
             throw new IllegalStateException("Download context is unavailable");
@@ -63,6 +68,7 @@ public class MediaDownloader {
         if (notificationManager == null) {
             throw new IllegalStateException("Notification service is unavailable");
         }
+        this.showProgressToasts = showProgressToasts;
         createNotificationChannel();
     }
 
@@ -129,7 +135,7 @@ public class MediaDownloader {
             String downloadStartString = ExtensionStrings.DOWNLOAD_ONGOING + request.fileName;
             builder.setContentTitle(downloadStartString);
             notificationManager.notify(notificationId, builder.build());
-            showToast(downloadStartString);
+            if (showProgressToasts) showToast(downloadStartString);
             HttpURLConnection conn = null;
             try {
                 URL url = new URL(request.url);
@@ -179,9 +185,11 @@ public class MediaDownloader {
                 // Force post the update layout
                 notificationManager.notify(finalNotificationId, builder.build());
 
-                try {
-                    PikoUtils.toast(downloadCompletedString);
-                } catch (Exception ignored) {}
+                if (showProgressToasts) {
+                    try {
+                        PikoUtils.toast(downloadCompletedString);
+                    } catch (Exception ignored) {}
+                }
             });
         } catch (Exception e) {
             if (!downloadCompleted && outputDocumentUri != null) {
