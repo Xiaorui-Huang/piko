@@ -43,7 +43,10 @@ public class MessageUtils {
                 MediaData audioData = messageInfo.getAudioMedia();
                 String audioUrl = audioData.getMessageAudioUrl();
                 String fileName = audioData.getDownloadFilename(MediaType.AUDIO);
-                DownloadUtils.downloadMediaUrl(context,audioUrl,Constants.DEFAULT_DM_FOLDER,fileName);
+                String username = audioData.getUserData().getUsername();
+                String subFolder = DownloadUtils.getSubfolderName(username);
+                if (subFolder == null) subFolder = Constants.DEFAULT_DM_FOLDER;
+                DownloadUtils.downloadMediaUrl(context,audioUrl,subFolder,fileName);
 
                 // We need to return false since we don't need download action to be taken by Instagram.
                 return false;
