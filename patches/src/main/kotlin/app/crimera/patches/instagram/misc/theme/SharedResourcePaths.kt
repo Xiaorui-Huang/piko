@@ -9,7 +9,10 @@ package app.crimera.patches.instagram.misc.theme
 import app.morphe.patcher.patch.ResourcePatchContext
 import org.w3c.dom.Element
 
-private val pathMapEntry = Regex(""""name"\s*:\s*"([^"]+)"\s*,\s*"alias"\s*:\s*"([^"]+)"""")
+private val pathMapEntry = Regex("""\{[^}]*}""")
+private val pathMapName = Regex(""""name"\s*:\s*"([^"]+)"""")
+private val pathMapAlias = Regex(""""alias"\s*:\s*"([^"]+)"""")
+private val resourcePathValue = Regex(""">\s*(res/[^<]+?)\s*<""")
 
 private val themeValuesFiles =
     listOf("values", "values-night", "values-v31", "values-night-v31").flatMap { directory ->
@@ -31,13 +34,19 @@ internal fun ResourcePatchContext.restoreSharedResourcePaths() {
     val archiveNames =
         pathMapEntry
             .findAll(pathMap.readText())
-            .map { it.groupValues[2] to it.groupValues[1] }
-            .filter { (alias, name) -> alias != name }
-            .toMap()
+            .mapNotNull { entry ->
+                val name = pathMapName.find(entry.value)?.groupValues?.get(1)
+                val alias = pathMapAlias.find(entry.value)?.groupValues?.get(1)
+                if (name != null && alias != null && name != alias) alias to name else null
+            }.toMap()
     if (archiveNames.isEmpty()) return
 
     themeValuesFiles
-        .filter { get(it).isFile && archiveNames.keys.any(get(it).readText()::contains) }
+        .filter { path ->
+            val file = get(path)
+            file.isFile &&
+                resourcePathValue.findAll(file.readText()).any { it.groupValues[1] in archiveNames }
+        }
         .forEach { path ->
             document(path).use { document ->
                 val elements = document.documentElement.getElementsByTagName("*")
