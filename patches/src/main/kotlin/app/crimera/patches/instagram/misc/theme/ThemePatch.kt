@@ -67,6 +67,7 @@ val themePatch =
                 writeMaterialYouOverlay(night = true)
                 writeAmoledOverlay(originalApi31Base)
                 writeAmoledMaterialYouOverlay()
+                restoreSharedResourcePaths()
 
                 context(requireNotNull(bytecodePatchContext)) {
                     installComposePrismBlackRuntime(legacyAmoled = amoled == true)
