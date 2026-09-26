@@ -9,7 +9,7 @@ package app.crimera.patches.instagram.misc.theme
 import app.morphe.patcher.patch.ResourcePatchContext
 import org.w3c.dom.Element
 
-private val pathMapEntry = Regex("""\{[^}]*}""")
+private val pathMapEntry = Regex("""\{[^}]*\}""")
 private val pathMapName = Regex(""""name"\s*:\s*"([^"]+)"""")
 private val pathMapAlias = Regex(""""alias"\s*:\s*"([^"]+)"""")
 private val resourcePathValue = Regex(""">\s*(res/[^<]+?)\s*<""")
