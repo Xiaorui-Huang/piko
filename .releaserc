@@ -4,6 +4,10 @@
     {
       "name": "dev",
       "prerelease": true
+    },
+    {
+      "name": "personal",
+      "prerelease": true
     }
   ],
   "plugins": [
