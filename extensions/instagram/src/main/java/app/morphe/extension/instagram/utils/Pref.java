@@ -257,6 +257,10 @@ public class Pref {
         return removeLineBreaks(SharedPref.getStringPref(Settings.DOWNLOAD_FILE_NAME_TEMPLATE));
     }
 
+    public static boolean showDownloadProgressToasts() {
+        return SharedPref.getBooleanPref(Settings.SHOW_DOWNLOAD_PROGRESS_TOASTS);
+    }
+
     public static boolean hideNavigationFeed() {
         return SharedPref.getBooleanPref(Settings.HIDE_NAVIGATION_FEED);
     }

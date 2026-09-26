@@ -79,6 +79,7 @@ public class Settings {
     public static final BooleanSetting EMBED_DOWNLOAD_METADATA = new BooleanSetting("embed_download_metadata", false);
     public static final StringSetting DOWNLOAD_FILE_NAME_TEMPLATE =
             new StringSetting("download_file_name_template", DownloadFileNameFormatter.DEFAULT_TEMPLATE);
+    public static final BooleanSetting SHOW_DOWNLOAD_PROGRESS_TOASTS = new BooleanSetting("show_download_progress_toasts", true);
     // Should be kept empty by default as its handled in `StorageUtils.java`
     public static final StringSetting CUSTOM_DOWNLOAD_PATH = new StringSetting("custom_download_path", "");
     public static final StringSetting EXTERNAL_DOWNLOADER_PACKAGE_NAME = new StringSetting("external_downloader_package_name", "");

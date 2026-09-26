@@ -712,6 +712,14 @@ public class ScreenBuilder {
         );
 
         addPreference(
+                helper.switchPreference(
+                        str("piko_show_download_progress_toasts"),
+                        str("piko_show_download_progress_toasts_desc"),
+                        Settings.SHOW_DOWNLOAD_PROGRESS_TOASTS
+                )
+        );
+
+        addPreference(
                 helper.buttonPreference(
                         str("piko_download_set_path"),
                         StorageUtils.getCustomPathForDisplay(),
