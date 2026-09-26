@@ -689,6 +689,14 @@ public class ScreenBuilder {
 
         addPreference(
                 helper.switchPreference(
+                        str("piko_post_download_button"),
+                        str("piko_post_download_button_desc"),
+                        Settings.POST_DOWNLOAD_BUTTON
+                )
+        );
+
+        addPreference(
+                helper.switchPreference(
                         str("piko_download_username_folder"),
                         str("piko_download_username_folder_desc"),
                         Settings.DOWNLOAD_USERNAME_FOLDER
