@@ -69,7 +69,7 @@ To patch with Twitter/X version 11.88 to 12.4, you must include patches from ano
 ## ⚙️ Patch Details
 
 <!-- PATCHES_START -->
-> **[v3.10.0-personal.2](https://github.com/Xiaorui-Huang/piko/releases/tag/v3.10.0-personal.2)**&nbsp;&nbsp;•&nbsp;&nbsp;`personal`&nbsp;&nbsp;•&nbsp;&nbsp;137 patches total
+> **[v3.10.0-personal.3](https://github.com/Xiaorui-Huang/piko/releases/tag/v3.10.0-personal.3)**&nbsp;&nbsp;•&nbsp;&nbsp;`personal`&nbsp;&nbsp;•&nbsp;&nbsp;137 patches total
 <details>
 <summary>📦 Twitter&nbsp;&nbsp;•&nbsp;&nbsp;75 patches</summary>
 <br>

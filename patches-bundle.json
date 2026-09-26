@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-09-26T17:29:25",
-  "description": "## [3.10.0-personal.2](https://github.com/Xiaorui-Huang/piko/compare/v3.10.0-personal.1...v3.10.0-personal.2) (2026-09-26)\n\n### 🐛 Bug Fixes\n\n* **Instagram:** Fall back to the web link for view history stories ([e512a7a](https://github.com/Xiaorui-Huang/piko/commit/e512a7a1fac7f1d39e8569fdef7e639442a0c00f))\n* **Instagram:** Give the view history Clear button its own string ([2ff84ae](https://github.com/Xiaorui-Huang/piko/commit/2ff84ae1c8a81ca15172d8edd4260c6fa24ad66f))\n* **Instagram:** Open stories from view history in the story viewer ([f2fad9b](https://github.com/Xiaorui-Huang/piko/commit/f2fad9bce6bf748335b13a00f6798f09f7a72013))\n\n### ✨ New Features\n\n* **Instagram:** Copy a view history entry's link from its long-press menu ([afbe1b2](https://github.com/Xiaorui-Huang/piko/commit/afbe1b271d04c4c6132e2a64d66fbd02991b1440))",
-  "download_url": "https://github.com/Xiaorui-Huang/piko/releases/download/v3.10.0-personal.2/patches-3.10.0-personal.2.mpp",
-  "signature_download_url": "https://github.com/Xiaorui-Huang/piko/releases/download/v3.10.0-personal.2/patches-3.10.0-personal.2.mpp.asc",
-  "version": "3.10.0-personal.2"
+  "created_at": "2026-09-26T19:08:05",
+  "description": "## [3.10.0-personal.3](https://github.com/Xiaorui-Huang/piko/compare/v3.10.0-personal.2...v3.10.0-personal.3) (2026-09-26)\n\n### 🐛 Bug Fixes\n\n* **Instagram:** Open view history stories in the story viewer ([32603fb](https://github.com/Xiaorui-Huang/piko/commit/32603fb7ccdd9e80471e0c3cafc2f30937f57f49))\n* **Instagram:** Open view history stories with the web link again ([335aeb7](https://github.com/Xiaorui-Huang/piko/commit/335aeb7bb48d685e01af8107a3cf5b4907a3932f))\n* **Instagram:** Recreate a view history table with outdated columns ([c2a69d8](https://github.com/Xiaorui-Huang/piko/commit/c2a69d8078cb5a66d5b8b08dea020bf2c4726669))\n* **Instagram:** Start view history fresh when its database is unusable ([d29bc6f](https://github.com/Xiaorui-Huang/piko/commit/d29bc6f1fbe0ecb99ff32e6f52a7752965b18fdb))",
+  "download_url": "https://github.com/Xiaorui-Huang/piko/releases/download/v3.10.0-personal.3/patches-3.10.0-personal.3.mpp",
+  "signature_download_url": "https://github.com/Xiaorui-Huang/piko/releases/download/v3.10.0-personal.3/patches-3.10.0-personal.3.mpp.asc",
+  "version": "3.10.0-personal.3"
 }
