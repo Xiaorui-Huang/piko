@@ -7,6 +7,15 @@
 * **Instagram:** Recreate a view history table with outdated columns ([c2a69d8](https://github.com/Xiaorui-Huang/piko/commit/c2a69d8078cb5a66d5b8b08dea020bf2c4726669))
 * **Instagram:** Start view history fresh when its database is unusable ([d29bc6f](https://github.com/Xiaorui-Huang/piko/commit/d29bc6f1fbe0ecb99ff32e6f52a7752965b18fdb))
 
+## [3.10.0-personal.3](https://github.com/Xiaorui-Huang/piko/compare/v3.10.0-personal.2...v3.10.0-personal.3) (2026-09-26)
+
+### 🐛 Bug Fixes
+
+* **Instagram:** Open view history stories in the story viewer ([32603fb](https://github.com/Xiaorui-Huang/piko/commit/32603fb7ccdd9e80471e0c3cafc2f30937f57f49))
+* **Instagram:** Open view history stories with the web link again ([335aeb7](https://github.com/Xiaorui-Huang/piko/commit/335aeb7bb48d685e01af8107a3cf5b4907a3932f))
+* **Instagram:** Recreate a view history table with outdated columns ([c2a69d8](https://github.com/Xiaorui-Huang/piko/commit/c2a69d8078cb5a66d5b8b08dea020bf2c4726669))
+* **Instagram:** Start view history fresh when its database is unusable ([d29bc6f](https://github.com/Xiaorui-Huang/piko/commit/d29bc6f1fbe0ecb99ff32e6f52a7752965b18fdb))
+
 ## [3.10.0-personal.2](https://github.com/Xiaorui-Huang/piko/compare/v3.10.0-personal.1...v3.10.0-personal.2) (2026-09-26)
 
 ### 🐛 Bug Fixes
