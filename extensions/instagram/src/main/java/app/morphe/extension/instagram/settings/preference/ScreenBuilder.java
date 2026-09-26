@@ -280,6 +280,27 @@ public class ScreenBuilder {
         }
     }
 
+    public void historySection() {
+        if (!(SettingsStatus.historySection())) return;
+
+        if (SettingsStatus.saveViewHistory) {
+            addPreference(
+                    helper.switchPreference(
+                            str("piko_save_view_history"),
+                            str("piko_save_view_history_desc"),
+                            Settings.SAVE_VIEW_HISTORY
+                    )
+            );
+            addPreference(
+                    helper.buttonPreference(
+                            str("piko_view_history"),
+                            "",
+                            "view_history"
+                    )
+            );
+        }
+    }
+
     public void ghostSection() {
         if (!(SettingsStatus.ghostSection())) return;
 
@@ -1140,6 +1161,16 @@ public class ScreenBuilder {
                             str("piko_category_story"),
                             "",
                             Constants.PIKO_FRAGMENT_STORY
+                    )
+            );
+        }
+
+        if (SettingsStatus.historySection()){
+            addPreference(
+                    helper.buttonPreference(
+                            str("piko_category_history"),
+                            "",
+                            Constants.PIKO_FRAGMENT_HISTORY
                     )
             );
         }
