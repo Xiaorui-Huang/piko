@@ -1,3 +1,15 @@
+## [3.10.0-personal.2](https://github.com/Xiaorui-Huang/piko/compare/v3.10.0-personal.1...v3.10.0-personal.2) (2026-09-26)
+
+### 🐛 Bug Fixes
+
+* **Instagram:** Fall back to the web link for view history stories ([e512a7a](https://github.com/Xiaorui-Huang/piko/commit/e512a7a1fac7f1d39e8569fdef7e639442a0c00f))
+* **Instagram:** Give the view history Clear button its own string ([2ff84ae](https://github.com/Xiaorui-Huang/piko/commit/2ff84ae1c8a81ca15172d8edd4260c6fa24ad66f))
+* **Instagram:** Open stories from view history in the story viewer ([f2fad9b](https://github.com/Xiaorui-Huang/piko/commit/f2fad9bce6bf748335b13a00f6798f09f7a72013))
+
+### ✨ New Features
+
+* **Instagram:** Copy a view history entry's link from its long-press menu ([afbe1b2](https://github.com/Xiaorui-Huang/piko/commit/afbe1b271d04c4c6132e2a64d66fbd02991b1440))
+
 ## [3.10.0-personal.1](https://github.com/Xiaorui-Huang/piko/compare/v3.9.0...v3.10.0-personal.1) (2026-09-26)
 
 ### 🐛 Bug Fixes
