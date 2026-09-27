@@ -13,6 +13,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -25,6 +26,7 @@ public class PikoHistoryDb extends SQLiteOpenHelper {
     private static final String DB_NAME = "piko_view_history.db";
     private static final int DB_VERSION = 2;
     private static final String TABLE = "view_history";
+    private static final String THUMBNAIL_DIR = "piko_view_history_thumbnails";
 
     private static final int MAX_ROWS = 2000;
 
@@ -80,6 +82,7 @@ public class PikoHistoryDb extends SQLiteOpenHelper {
     private void recreate(SQLiteDatabase db) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE);
         onCreate(db);
+        deleteThumbnails();
     }
 
     /**
@@ -93,6 +96,7 @@ public class PikoHistoryDb extends SQLiteOpenHelper {
             Logger.printException(() -> "View history database unusable, starting fresh", e);
             close();
             context.deleteDatabase(DB_NAME);
+            deleteThumbnails();
             return query.apply(getWritableDatabase());
         }
     }
@@ -112,11 +116,13 @@ public class PikoHistoryDb extends SQLiteOpenHelper {
 
         withFreshFallback(db -> {
             db.insertWithOnConflict(TABLE, null, cv, SQLiteDatabase.CONFLICT_REPLACE);
-            db.execSQL(
-                "DELETE FROM " + TABLE + " WHERE id IN (" +
-                "SELECT id FROM " + TABLE + " ORDER BY viewed_at DESC LIMIT -1 OFFSET " + MAX_ROWS +
-                ")"
-            );
+            try (Cursor c = db.query(TABLE, new String[]{"id", "media_pk"}, null, null, null, null,
+                    "viewed_at DESC", "-1 OFFSET " + MAX_ROWS)) {
+                while (c.moveToNext()) {
+                    db.delete(TABLE, "id = ?", new String[]{c.getString(0)});
+                    thumbnailFile(c.getString(1)).delete();
+                }
+            }
             return null;
         });
     }
@@ -146,12 +152,27 @@ public class PikoHistoryDb extends SQLiteOpenHelper {
         return result;
     }
 
-    public void deleteEntry(long id) {
-        withFreshFallback(db -> db.delete(TABLE, "id = ?", new String[]{String.valueOf(id)}));
+    public void deleteEntry(Entry entry) {
+        withFreshFallback(db -> db.delete(TABLE, "id = ?", new String[]{String.valueOf(entry.id)}));
+        thumbnailFile(entry.mediaPk).delete();
     }
 
     public void clearAll() {
         withFreshFallback(db -> db.delete(TABLE, null, null));
+        deleteThumbnails();
+    }
+
+    /** Where the thumbnail of an item is saved, so it still shows once its CDN URL expires. */
+    public File thumbnailFile(String mediaPk) {
+        return new File(new File(context.getFilesDir(), THUMBNAIL_DIR), mediaPk + ".webp");
+    }
+
+    private void deleteThumbnails() {
+        File[] files = new File(context.getFilesDir(), THUMBNAIL_DIR).listFiles();
+        if (files == null) return;
+        for (File file : files) {
+            file.delete();
+        }
     }
 
     public static final class Entry {
