@@ -112,9 +112,11 @@ public class MediaDownloader {
         try {
             synchronized (CREATE_DOCUMENT_LOCK) {
                 Uri targetDirectoryUri = getTargetDirectoryUri(request);
-                request.fileName = DownloadFileNames.findAvailable(
-                        request.fileName, getChildNames(targetDirectoryUri)
-                );
+                if (getChildNames(targetDirectoryUri).contains(request.fileName)) {
+                    showToast(ExtensionStrings.DOWNLOAD_MEDIA_EXISTS);
+                    notificationManager.cancel(notificationId);
+                    return;
+                }
                 outputDocumentUri = DocumentsContract.createDocument(
                         context.getContentResolver(),
                         targetDirectoryUri,
