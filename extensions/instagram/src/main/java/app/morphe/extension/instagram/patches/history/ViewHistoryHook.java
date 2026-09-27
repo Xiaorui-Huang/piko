@@ -28,7 +28,6 @@ import app.morphe.extension.shared.Logger;
 @SuppressWarnings("unused")
 public class ViewHistoryHook {
 
-    private static final int THUMBNAIL_MIN_WIDTH = 360;
     private static final ExecutorService DB_WRITER = Executors.newSingleThreadExecutor();
 
     /** The logged-in session's token, which Instagram's in-app story opener requires. */
@@ -69,6 +68,7 @@ public class ViewHistoryHook {
                     PikoHistoryDb.getInstance(PikoUtils.getContext())
                             .logView(mediaPk, postType, ownerUsername, ownerId, thumbUrl,
                                     caption, permalink);
+                    ThumbnailCache.save(mediaPk, thumbUrl);
                 } catch (Exception e) {
                     Logger.printException(() -> "View history write failure", e);
                 }
@@ -86,7 +86,7 @@ public class ViewHistoryHook {
         }
     }
 
-    /** The smallest image variant that is still sharp in a half-width grid card. */
+    /** The smallest image variant at least as wide as the saved thumbnail. */
     @SuppressWarnings("unchecked")
     private static String thumbnailUrl(MediaData mediaData) throws Exception {
         List<ImageData> variants = mediaData.getImageVariants();
@@ -95,7 +95,7 @@ public class ViewHistoryHook {
         int bestWidth = Integer.MAX_VALUE;
         for (ImageData variant : variants) {
             Integer width = variant.getWidth();
-            if (width != null && width >= THUMBNAIL_MIN_WIDTH && width < bestWidth) {
+            if (width != null && width >= ThumbnailCache.WIDTH && width < bestWidth) {
                 best = variant;
                 bestWidth = width;
             }

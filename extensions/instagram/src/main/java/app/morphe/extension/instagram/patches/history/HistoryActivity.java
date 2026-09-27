@@ -49,7 +49,6 @@ public class HistoryActivity extends Activity {
 
     private List<PikoHistoryDb.Entry> history;
     private int renderedCount;
-    private int thumbnailWidth;
     private LinearLayout leftColumn;
     private LinearLayout rightColumn;
     private int leftHeightEstimate;
@@ -147,7 +146,6 @@ public class HistoryActivity extends Activity {
             grid.addView(leftColumn, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
             grid.addView(rightColumn, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
 
-            thumbnailWidth = getResources().getDisplayMetrics().widthPixels / 2;
             addNextPage();
             scrollView.setOnScrollChangeListener((v, x, y, oldX, oldY) -> {
                 if (y + v.getHeight() >= grid.getHeight() - v.getHeight()) addNextPage();
@@ -231,7 +229,7 @@ public class HistoryActivity extends Activity {
                     Utils.setClipboard(webLink);
                     Utils.showToastShort(str("piko_copied"));
                 } else {
-                    confirmDelete(entry.id, card, column);
+                    confirmDelete(entry, card, column);
                 }
             })
             .show();
@@ -243,11 +241,11 @@ public class HistoryActivity extends Activity {
         return permalink == null || permalink.isEmpty() ? null : permalink;
     }
 
-    private void confirmDelete(long id, View card, LinearLayout column) {
+    private void confirmDelete(PikoHistoryDb.Entry entry, View card, LinearLayout column) {
         new AlertDialog.Builder(InstagramPreferenceStyle.dialogContext(this))
             .setMessage(str("piko_delete_view_history_confirm"))
             .setPositiveButton(str("piko_delete"), (d, w) -> {
-                PikoHistoryDb.getInstance(this).deleteEntry(id);
+                PikoHistoryDb.getInstance(this).deleteEntry(entry);
                 column.removeView(card);
             })
             .setNegativeButton(str("piko_cancel"), null)
@@ -279,7 +277,7 @@ public class HistoryActivity extends Activity {
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         ));
-        ThumbnailCache.load(thumb, entry.thumbUrl, thumbnailWidth);
+        ThumbnailCache.load(thumb, entry.mediaPk, entry.thumbUrl);
 
         LinearLayout textBlock = new LinearLayout(this);
         textBlock.setOrientation(LinearLayout.VERTICAL);
