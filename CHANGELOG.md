@@ -1,3 +1,9 @@
+## [3.10.0-personal.5](https://github.com/Xiaorui-Huang/piko/compare/v3.10.0-personal.4...v3.10.0-personal.5) (2026-09-27)
+
+### 🐛 Bug Fixes
+
+* **Instagram:** Keep view history thumbnails after their links expire ([7da78dd](https://github.com/Xiaorui-Huang/piko/commit/7da78ddd64bf225cc9eefb766ae82dabc47d242f))
+
 ## [3.10.0-personal.4](https://github.com/Xiaorui-Huang/piko/compare/v3.10.0-personal.3...v3.10.0-personal.4) (2026-09-27)
 
 ### 🐛 Bug Fixes
