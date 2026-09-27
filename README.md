@@ -69,7 +69,7 @@ To patch with Twitter/X version 11.88 to 12.4, you must include patches from ano
 ## ⚙️ Patch Details
 
 <!-- PATCHES_START -->
-> **[v3.10.0-personal.3](https://github.com/Xiaorui-Huang/piko/releases/tag/v3.10.0-personal.3)**&nbsp;&nbsp;•&nbsp;&nbsp;`personal`&nbsp;&nbsp;•&nbsp;&nbsp;137 patches total
+> **[v3.10.0-personal.4](https://github.com/Xiaorui-Huang/piko/releases/tag/v3.10.0-personal.4)**&nbsp;&nbsp;•&nbsp;&nbsp;`personal`&nbsp;&nbsp;•&nbsp;&nbsp;138 patches total
 <details>
 <summary>📦 Twitter&nbsp;&nbsp;•&nbsp;&nbsp;75 patches</summary>
 <br>
@@ -160,7 +160,7 @@ To patch with Twitter/X version 11.88 to 12.4, you must include patches from ano
 </details>
 
 <details>
-<summary>📦 Instagram&nbsp;&nbsp;•&nbsp;&nbsp;62 patches</summary>
+<summary>📦 Instagram&nbsp;&nbsp;•&nbsp;&nbsp;63 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -198,6 +198,7 @@ To patch with Twitter/X version 11.88 to 12.4, you must include patches from ano
 | [Download voice message](#download-voice-message) | Enables ability to download voice messages |  |
 | [External downloader](#external-downloader) | Adds support to share post links directly to external downloader |  |
 | [Filter stories](#filter-stories) | Filter stories to hide based on different categories |  |
+| [Focus Lock](#focus-lock) | Commitment mode for cutting down on Instagram. Pick what to block (Reels, Explore) and a duration; once locked those protections are forced on and cannot be switched off. Reels shared with you still open. Unlocking early requires a 24 hour cooling-off period, and resetting or importing settings is blocked while locked. |  |
 | [Friendship status indicator](#friendship-status-indicator) | Adds a follows you back status label on the profile page andshows a detailed friendship status breakdown on click |  |
 | [Hide Reels follow button](#hide-reels-follow-button) | Removes the follow button from Reels. |  |
 | [Hide group creation button on sharesheet](#hide-group-creation-button-on-sharesheet) |  |  |

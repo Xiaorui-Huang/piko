@@ -1,3 +1,17 @@
+## [3.10.0-personal.4](https://github.com/Xiaorui-Huang/piko/compare/v3.10.0-personal.3...v3.10.0-personal.4) (2026-09-27)
+
+### 🐛 Bug Fixes
+
+* **Instagram:** add auto-scroll persistence flag to recommended flags ([#1957](https://github.com/Xiaorui-Huang/piko/issues/1957)) ([096ea87](https://github.com/Xiaorui-Huang/piko/commit/096ea8738d2edae3bf1d47aa8404822e6d4ccc5d)), closes [#1746](https://github.com/Xiaorui-Huang/piko/issues/1746)
+* **Instagram:** invoke reflected methods on the correct receiver ([#1960](https://github.com/Xiaorui-Huang/piko/issues/1960)) ([e4a9464](https://github.com/Xiaorui-Huang/piko/commit/e4a9464792f8990a003a9289fe75243f6a54fa48))
+* **Instagram:** remove forced HDR brightness on photos and Reels ([#1955](https://github.com/Xiaorui-Huang/piko/issues/1955)) ([0084136](https://github.com/Xiaorui-Huang/piko/commit/0084136b5ded2210e03d14dceabb09013be1cb3a)), closes [#1817](https://github.com/Xiaorui-Huang/piko/issues/1817)
+* **Instagram:** Restore skip-and-toast when a download already exists ([50d0b6b](https://github.com/Xiaorui-Huang/piko/commit/50d0b6b78c2c2fa4054e9adbddf7193cbeb7fa15)), closes [#1923](https://github.com/Xiaorui-Huang/piko/issues/1923)
+
+### ✨ New Features
+
+* **Instagram:** Add `Focus Lock` patch ([#1928](https://github.com/Xiaorui-Huang/piko/issues/1928)) ([2b6b5ac](https://github.com/Xiaorui-Huang/piko/commit/2b6b5ac21cb199f40a4e6dfc0dc76c36992fe31f))
+* **Instagram:** Add download buttons to Reels and Stories ([a5ad0da](https://github.com/Xiaorui-Huang/piko/commit/a5ad0da62a49e5cdae9c820b6c4b45327fcb694c))
+
 ## [3.10.0-personal.3](https://github.com/Xiaorui-Huang/piko/compare/v3.10.0-personal.2...v3.10.0-personal.3) (2026-09-26)
 
 ### 🐛 Bug Fixes
