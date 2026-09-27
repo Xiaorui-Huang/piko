@@ -697,6 +697,22 @@ public class ScreenBuilder {
 
         addPreference(
                 helper.switchPreference(
+                        str("piko_reel_download_button"),
+                        str("piko_reel_download_button_desc"),
+                        Settings.REEL_DOWNLOAD_BUTTON
+                )
+        );
+
+        addPreference(
+                helper.switchPreference(
+                        str("piko_story_download_button"),
+                        str("piko_story_download_button_desc"),
+                        Settings.STORY_DOWNLOAD_BUTTON
+                )
+        );
+
+        addPreference(
+                helper.switchPreference(
                         str("piko_download_username_folder"),
                         str("piko_download_username_folder_desc"),
                         Settings.DOWNLOAD_USERNAME_FOLDER

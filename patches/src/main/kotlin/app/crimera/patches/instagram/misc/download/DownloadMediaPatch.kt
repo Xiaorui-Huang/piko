@@ -50,6 +50,8 @@ val downloadMediaPatch =
             debugOverflowMenuButtonPatch,
             hookReelOverflowMenuButton,
             postDownloadButtonsPatch,
+            reelDownloadButtonPatch,
+            storyDownloadButtonPatch,
         )
         compatibleWith(COMPATIBILITY_INSTAGRAM)
 

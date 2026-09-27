@@ -249,6 +249,14 @@ public class Pref {
         return SharedPref.getBooleanPref(Settings.POST_DOWNLOAD_BUTTON);
     }
 
+    public static boolean reelDownloadButton() {
+        return SharedPref.getBooleanPref(Settings.REEL_DOWNLOAD_BUTTON);
+    }
+
+    public static boolean storyDownloadButton() {
+        return SharedPref.getBooleanPref(Settings.STORY_DOWNLOAD_BUTTON);
+    }
+
     public static boolean downloadUsernameFolder() {
         return SharedPref.getBooleanPref(Settings.DOWNLOAD_USERNAME_FOLDER);
     }
