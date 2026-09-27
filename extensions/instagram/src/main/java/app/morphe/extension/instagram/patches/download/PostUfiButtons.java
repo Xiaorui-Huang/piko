@@ -82,19 +82,23 @@ public class PostUfiButtons {
         }
     }
 
-    // Click events wrap the clicked view; dialogs need the activity it belongs to.
+    // Dialogs need the activity the clicked view belongs to.
+    static Context getActivity(View view) {
+        Context context = view.getContext();
+        while (context instanceof ContextWrapper && !(context instanceof Activity)) {
+            context = ((ContextWrapper) context).getBaseContext();
+        }
+        return context instanceof Activity ? context : Utils.getActivity();
+    }
+
+    // Click events wrap the clicked view.
     private static Context getContext(Object event) {
         try {
             for (Field field : event.getClass().getDeclaredFields()) {
                 if (!View.class.isAssignableFrom(field.getType())) continue;
                 field.setAccessible(true);
                 View view = (View) field.get(event);
-                if (view == null) continue;
-                Context context = view.getContext();
-                while (context instanceof ContextWrapper && !(context instanceof Activity)) {
-                    context = ((ContextWrapper) context).getBaseContext();
-                }
-                if (context instanceof Activity) return context;
+                if (view != null) return getActivity(view);
             }
         } catch (Exception e) {
             Logger.printException(() -> "PostUfiButtons getContext failure", e);
@@ -112,6 +116,11 @@ public class PostUfiButtons {
             saveIcon.remove();
             return null;
         }
+        return createClickHandler(userSession, media, carouselState);
+    }
+
+    // Tap downloads the current media, long press shows the download options. A null carousel state means index 0.
+    static Function1<Object, Unit> createClickHandler(UserSession userSession, Object media, Object carouselState) {
         return new ClickHandler(
                 event -> {
                     DownloadUtils.downloadCurrentMedia(getContext(event), userSession, media, getCurrentIndex(carouselState));

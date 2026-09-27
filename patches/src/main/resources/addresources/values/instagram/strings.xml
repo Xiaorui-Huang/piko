@@ -165,6 +165,10 @@
     <string name="piko_enable_direct_download_desc">Downloads the current viewing media without asking for options</string>
     <string name="piko_post_download_button">Download button on posts</string>
     <string name="piko_post_download_button_desc">Shows a download button next to save. Tap to download the current media, long press for download options</string>
+    <string name="piko_reel_download_button">Download button on reels</string>
+    <string name="piko_reel_download_button_desc">Shows a download button above the more button. Tap to download the reel, long press for download options</string>
+    <string name="piko_story_download_button">Download button on stories</string>
+    <string name="piko_story_download_button_desc">Shows a download button next to like. Tap to download the story, long press for download options</string>
     <string name="piko_download_username_folder">Split media by username</string>
     <string name="piko_download_username_folder_desc">Creates subfolders based on username</string>
     <string name="piko_embed_download_metadata">Embed video metadata</string>

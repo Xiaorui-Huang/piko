@@ -10,6 +10,7 @@ import app.crimera.patches.instagram.utils.Constants.DOWNLOAD_DESCRIPTOR
 import app.morphe.patcher.Fingerprint
 import app.morphe.patches.all.misc.resources.ResourceType
 import app.morphe.patches.all.misc.resources.resourceLiteral
+import com.android.tools.smali.dexlib2.AccessFlags
 
 internal object FeedButtonOnClickFingerprint : Fingerprint(
     parameters = listOf("Lcom/instagram/feed/media/mediaoption/MediaOption\$Option;"),
@@ -48,4 +49,17 @@ internal object FeedUfiComponentFingerprint : Fingerprint(
 internal object PostUfiCurrentIndexFieldNameFingerprint : Fingerprint(
     definingClass = "$DOWNLOAD_DESCRIPTOR/PostUfiButtons;",
     name = "getCurrentIndexFieldName",
+)
+
+// Builds the more (≡) button of the Reels UFI column: its test key and accessibility class.
+internal object ClipsUfiMoreButtonFingerprint : Fingerprint(
+    strings = listOf("clips_ufi_more_button_component", "android.widget.Button"),
+)
+
+// Binds the story viewer footer (reply box, like, share) to a story item.
+internal object StoryToolbarBindFingerprint : Fingerprint(
+    returnType = "V",
+    strings = listOf("ReelViewerItemToolbarBinder.bindView"),
+    // Not SponsoredReelViewerItemToolbarBinder#bindView.
+    custom = { method, _ -> AccessFlags.STATIC.isSet(method.accessFlags) },
 )
