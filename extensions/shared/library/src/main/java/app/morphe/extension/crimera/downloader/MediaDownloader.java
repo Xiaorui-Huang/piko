@@ -135,7 +135,7 @@ public class MediaDownloader {
             String downloadStartString = ExtensionStrings.DOWNLOAD_ONGOING + request.fileName;
             builder.setContentTitle(downloadStartString);
             notificationManager.notify(notificationId, builder.build());
-            if (showProgressToasts) showToast(downloadStartString);
+            if (showProgressToasts) showToast(toastLine(ExtensionStrings.DOWNLOAD_ONGOING, request.fileName));
             HttpURLConnection conn = null;
             try {
                 URL url = new URL(request.url);
@@ -187,7 +187,7 @@ public class MediaDownloader {
 
                 if (showProgressToasts) {
                     try {
-                        PikoUtils.toast(downloadCompletedString);
+                        PikoUtils.toast(toastLine(ExtensionStrings.DOWNLOAD_COMPLETED, finalFileName));
                     } catch (Exception ignored) {}
                 }
             });
@@ -270,6 +270,24 @@ public class MediaDownloader {
                 }
                 output.flush();
             }
+        }
+    }
+
+    /** Toast text that always fits on one line: the file name is middle-ellipsized (keeps the extension). */
+    private String toastLine(String prefix, String fileName) {
+        try {
+            float density = context.getResources().getDisplayMetrics().density;
+            float screenWidth = context.getResources().getDisplayMetrics().widthPixels;
+            // Toast card is inset from the screen edges and padded inside; leave generous room.
+            float available = screenWidth - 96 * density;
+            android.text.TextPaint paint = new android.text.TextPaint();
+            paint.setTextSize(14 * context.getResources().getConfiguration().fontScale * density);
+            float room = available - paint.measureText(prefix);
+            if (room <= 0) return prefix.trim();
+            return prefix + android.text.TextUtils.ellipsize(
+                    fileName.replace('\n', ' '), paint, room, android.text.TextUtils.TruncateAt.MIDDLE);
+        } catch (Exception e) {
+            return prefix + fileName;
         }
     }
 
