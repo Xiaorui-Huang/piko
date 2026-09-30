@@ -9,6 +9,7 @@ package app.morphe.extension.instagram.patches.download;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -92,18 +93,28 @@ public class PostUfiButtons {
     }
 
     // Click events wrap the clicked view.
-    private static Context getContext(Object event) {
+    private static View getView(Object event) {
         try {
             for (Field field : event.getClass().getDeclaredFields()) {
                 if (!View.class.isAssignableFrom(field.getType())) continue;
                 field.setAccessible(true);
                 View view = (View) field.get(event);
-                if (view != null) return getActivity(view);
+                if (view != null) return view;
             }
         } catch (Exception e) {
-            Logger.printException(() -> "PostUfiButtons getContext failure", e);
+            Logger.printException(() -> "PostUfiButtons getView failure", e);
         }
-        return Utils.getActivity();
+        return null;
+    }
+
+    private static Context getContext(Object event) {
+        View view = getView(event);
+        return view != null ? getActivity(view) : Utils.getActivity();
+    }
+
+    // Component buttons don't vibrate on their own, so tap and long press buzz like the native buttons.
+    static void haptic(View view, int feedback) {
+        if (view != null) view.performHapticFeedback(feedback);
     }
 
     public static void captureSaveIcon(Object component, ImageView.ScaleType scaleType, Object modifier,
@@ -123,10 +134,12 @@ public class PostUfiButtons {
     static Function1<Object, Unit> createClickHandler(UserSession userSession, Object media, Object carouselState) {
         return new ClickHandler(
                 event -> {
+                    haptic(getView(event), HapticFeedbackConstants.VIRTUAL_KEY);
                     DownloadUtils.downloadCurrentMedia(getContext(event), userSession, media, getCurrentIndex(carouselState));
                     return Unit.INSTANCE;
                 },
                 event -> {
+                    haptic(getView(event), HapticFeedbackConstants.LONG_PRESS);
                     DownloadUtils.showDownloadMenu(getContext(event), userSession, media, getCurrentIndex(carouselState));
                     return Boolean.TRUE;
                 }
