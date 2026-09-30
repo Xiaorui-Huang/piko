@@ -12,6 +12,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.view.Gravity;
+import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -67,9 +68,12 @@ public class StoryDownloadButton {
             ImageView button = (ImageView) row.getChildAt(0);
             button.setVisibility(show ? View.VISIBLE : View.GONE);
             if (!show) return;
-            button.setOnClickListener(v ->
-                    DownloadUtils.downloadCurrentMedia(PostUfiButtons.getActivity(v), userSession, media, 0));
+            button.setOnClickListener(v -> {
+                PostUfiButtons.haptic(v, HapticFeedbackConstants.VIRTUAL_KEY);
+                DownloadUtils.downloadCurrentMedia(PostUfiButtons.getActivity(v), userSession, media, 0);
+            });
             button.setOnLongClickListener(v -> {
+                PostUfiButtons.haptic(v, HapticFeedbackConstants.LONG_PRESS);
                 DownloadUtils.showDownloadMenu(PostUfiButtons.getActivity(v), userSession, media, 0);
                 return true;
             });
