@@ -137,7 +137,7 @@ public class MediaDownloader {
             String downloadStartString = ExtensionStrings.DOWNLOAD_ONGOING + request.fileName;
             builder.setContentTitle(downloadStartString);
             notificationManager.notify(notificationId, builder.build());
-            if (showProgressToasts) showToast(toastLine(ExtensionStrings.DOWNLOAD_ONGOING, request.fileName));
+            if (showProgressToasts) showToast(toastLine("\u2B07\uFE0F ", request.fileName));
             HttpURLConnection conn = null;
             try {
                 URL url = new URL(request.url);
@@ -189,7 +189,7 @@ public class MediaDownloader {
 
                 if (showProgressToasts) {
                     try {
-                        PikoUtils.toast(toastLine(ExtensionStrings.DOWNLOAD_COMPLETED, finalFileName));
+                        PikoUtils.toast(toastLine("\u2705 ", finalFileName));
                     } catch (Exception ignored) {}
                 }
             });
@@ -281,7 +281,7 @@ public class MediaDownloader {
             float density = context.getResources().getDisplayMetrics().density;
             float screenWidth = context.getResources().getDisplayMetrics().widthPixels;
             // The system toast (with its app icon) gives the text only ~60% of the screen; stay well under.
-            float available = screenWidth * 0.5f;
+            float available = screenWidth * 0.58f;
             android.text.TextPaint paint = new android.text.TextPaint();
             paint.setTextSize(16 * context.getResources().getConfiguration().fontScale * density);
             float room = available - paint.measureText(prefix);
