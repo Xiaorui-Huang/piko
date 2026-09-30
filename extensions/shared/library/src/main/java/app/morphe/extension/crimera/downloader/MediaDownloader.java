@@ -280,10 +280,10 @@ public class MediaDownloader {
         try {
             float density = context.getResources().getDisplayMetrics().density;
             float screenWidth = context.getResources().getDisplayMetrics().widthPixels;
-            // Toast card is inset from the screen edges and padded inside; leave generous room.
-            float available = screenWidth - 96 * density;
+            // The system toast (with its app icon) gives the text only ~60% of the screen; stay well under.
+            float available = screenWidth * 0.5f;
             android.text.TextPaint paint = new android.text.TextPaint();
-            paint.setTextSize(14 * context.getResources().getConfiguration().fontScale * density);
+            paint.setTextSize(16 * context.getResources().getConfiguration().fontScale * density);
             float room = available - paint.measureText(prefix);
             if (room <= 0) return prefix.trim();
             return prefix + android.text.TextUtils.ellipsize(
