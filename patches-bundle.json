@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-09-27T05:08:58",
-  "description": "## [3.10.0-personal.5](https://github.com/Xiaorui-Huang/piko/compare/v3.10.0-personal.4...v3.10.0-personal.5) (2026-09-27)\n\n### 🐛 Bug Fixes\n\n* **Instagram:** Keep view history thumbnails after their links expire ([7da78dd](https://github.com/Xiaorui-Huang/piko/commit/7da78ddd64bf225cc9eefb766ae82dabc47d242f))",
-  "download_url": "https://github.com/Xiaorui-Huang/piko/releases/download/v3.10.0-personal.5/patches-3.10.0-personal.5.mpp",
-  "signature_download_url": "https://github.com/Xiaorui-Huang/piko/releases/download/v3.10.0-personal.5/patches-3.10.0-personal.5.mpp.asc",
-  "version": "3.10.0-personal.5"
+  "created_at": "2026-09-30T15:49:12",
+  "description": "## [3.10.0-personal.6](https://github.com/Xiaorui-Huang/piko/compare/v3.10.0-personal.5...v3.10.0-personal.6) (2026-09-30)\n\n### 🐛 Bug Fixes\n\n* **Instagram:** Budget less width for the single-line download toast ([5df22fc](https://github.com/Xiaorui-Huang/piko/commit/5df22fc690a4c2390d182594dcf3db2af641e596))\n* **Instagram:** Keep download start/complete toasts on a single line ([c278f95](https://github.com/Xiaorui-Huang/piko/commit/c278f952312f3bcb921bbfe82d73e67609c90703))\n* **Instagram:** Use icons instead of words in download toasts to fit more of the file name ([2a327b2](https://github.com/Xiaorui-Huang/piko/commit/2a327b28f4f05e0e526bec85df38bb6bace03e57))\n\n### ✨ New Features\n\n* **Instagram:** Add haptic feedback to feed, Reels and Story download buttons ([ff8b0b4](https://github.com/Xiaorui-Huang/piko/commit/ff8b0b424b3e144e03a0f6a7f0f5ca752eb496d1))",
+  "download_url": "https://github.com/Xiaorui-Huang/piko/releases/download/v3.10.0-personal.6/patches-3.10.0-personal.6.mpp",
+  "signature_download_url": "https://github.com/Xiaorui-Huang/piko/releases/download/v3.10.0-personal.6/patches-3.10.0-personal.6.mpp.asc",
+  "version": "3.10.0-personal.6"
 }
