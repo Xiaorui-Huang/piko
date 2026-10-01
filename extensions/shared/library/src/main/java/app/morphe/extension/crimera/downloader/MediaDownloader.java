@@ -135,7 +135,7 @@ public class MediaDownloader {
             String downloadStartString = ExtensionStrings.DOWNLOAD_ONGOING + request.fileName;
             builder.setContentTitle(downloadStartString);
             notificationManager.notify(notificationId, builder.build());
-            if (showProgressToasts) showToast(toastLine("\u2B07\uFE0F ", request.fileName));
+            if (showProgressToasts) showToast(toastLine("\u2B07\uFE0F ", toastText(request)));
             HttpURLConnection conn = null;
             try {
                 URL url = new URL(request.url);
@@ -174,6 +174,7 @@ public class MediaDownloader {
 
             final int finalNotificationId = notificationId;
             final String finalFileName = request.fileName;
+            final String finalToastText = toastText(request);
             final String downloadCompletedString = ExtensionStrings.DOWNLOAD_COMPLETED + finalFileName;
 
             mainHandler.post(() -> {
@@ -187,7 +188,7 @@ public class MediaDownloader {
 
                 if (showProgressToasts) {
                     try {
-                        PikoUtils.toast(toastLine("\u2705 ", finalFileName));
+                        PikoUtils.toast(toastLine("\u2705 ", finalToastText));
                     } catch (Exception ignored) {}
                 }
             });
@@ -271,6 +272,10 @@ public class MediaDownloader {
                 output.flush();
             }
         }
+    }
+
+    private static String toastText(DownloadRequest request) {
+        return request.toastLabel != null && !request.toastLabel.isEmpty() ? request.toastLabel : request.fileName;
     }
 
     /** Toast text that always fits on one line: the file name is middle-ellipsized (keeps the extension). */

@@ -12,6 +12,8 @@ public class DownloadRequest {
     public String subFolder; 
     public String fileName;
     public DownloadMetadata metadata;
+    // Short text shown in the start/complete toasts instead of the file name (e.g. the username).
+    public String toastLabel;
 
     public DownloadRequest(String url, String subFolder, String fileName) {
         this(url, subFolder, fileName, null);
@@ -27,5 +29,10 @@ public class DownloadRequest {
         this.subFolder = subFolder;
         this.fileName = fileName;
         this.metadata = metadata;
+    }
+
+    public DownloadRequest withToastLabel(String toastLabel) {
+        this.toastLabel = toastLabel;
+        return this;
     }
 }

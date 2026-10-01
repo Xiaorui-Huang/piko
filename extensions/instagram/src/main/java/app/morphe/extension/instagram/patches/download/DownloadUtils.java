@@ -229,7 +229,7 @@ public class DownloadUtils {
             AudioMediaInterface audioMedia = mediaInfo.getMediaAt(position).getAudioMedia();
             String audioUrl = audioMedia.getAudioUrl();
             String fileName = audioMedia.getDownloadName() + ".mp3";
-            downloader.enqueue(new DownloadRequest(audioUrl, Constants.DEFAULT_AUDIO_FOLDER, fileName));
+            downloader.enqueue(new DownloadRequest(audioUrl, Constants.DEFAULT_AUDIO_FOLDER, fileName).withToastLabel(username));
 
         } else if (position != -1) {
             MediaData mediaData = mediaInfo.getMediaAt(position);
@@ -249,7 +249,7 @@ public class DownloadUtils {
                     subFolder,
                     fileName,
                     null
-            ));
+            ).withToastLabel(username));
 
         } else if (position == -1) {
             int carouselSize = mediaInfo.getCarouselSize();
@@ -268,7 +268,7 @@ public class DownloadUtils {
                         subFolder,
                         fileName,
                         null
-                ));
+                ).withToastLabel(username));
             }
         } else {
             Utils.showToastShort("There is nothing to download");
