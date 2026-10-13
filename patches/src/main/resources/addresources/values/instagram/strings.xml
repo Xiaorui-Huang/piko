@@ -189,7 +189,11 @@
     <string name="piko_category_downloads">Downloads</string>
     <string name="piko_enable_download">Enable download</string>
     <string name="piko_feed_download_button">Download button on feed posts</string>
-    <string name="piko_feed_download_button_desc">Adds a download icon beside the save button on feed posts</string>
+    <string name="piko_feed_download_button_desc">Adds a download icon beside the save button on feed posts. Tap to download the current media, long press for download options</string>
+    <string name="piko_reel_download_button">Download button on Reels</string>
+    <string name="piko_reel_download_button_desc">Adds a download icon above the more button on Reels. Tap to download, long press for download options</string>
+    <string name="piko_story_download_button">Download button on Stories</string>
+    <string name="piko_story_download_button_desc">Adds a download icon after the share button on Stories. Tap to download, long press for download options</string>
     <string name="piko_save_media_comment">Save media comment</string>
     <string name="piko_save_media_comment_desc">Adds a button to save media comments on posts and reels</string>
     <string name="piko_enable_direct_download">Enable direct download</string>

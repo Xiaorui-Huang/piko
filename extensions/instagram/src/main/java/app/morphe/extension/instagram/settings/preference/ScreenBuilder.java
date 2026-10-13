@@ -759,6 +759,20 @@ public class ScreenBuilder {
                             Settings.FEED_DOWNLOAD_BUTTON
                     )
             );
+            addPreference(
+                    helper.switchPreference(
+                            str("piko_reel_download_button"),
+                            str("piko_reel_download_button_desc"),
+                            Settings.REEL_DOWNLOAD_BUTTON
+                    )
+            );
+            addPreference(
+                    helper.switchPreference(
+                            str("piko_story_download_button"),
+                            str("piko_story_download_button_desc"),
+                            Settings.STORY_DOWNLOAD_BUTTON
+                    )
+            );
         }
         if (SettingsStatus.saveMediaCommentButton) {
             addPreference(

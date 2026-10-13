@@ -37,3 +37,17 @@ internal object MediaOptionsOverflowMenuCreatorConstructorFingerprint : Fingerpr
     returnType = "V",
     strings = listOf("MediaOptionsOverflowMenuCreator"),
 )
+
+// Builds the more (≡) button of the Reels UFI column: the test key of its paged card variant (the
+// regular one is read from a name table) and its accessibility class.
+internal object ClipsUfiMoreButtonFingerprint : Fingerprint(
+    strings = listOf("clips_paged_card_ufi_more_button_component", "android.widget.Button"),
+)
+
+// Binds the story viewer footer (reply box, like, share) to a story item.
+internal object StoryToolbarBindFingerprint : Fingerprint(
+    returnType = "V",
+    strings = listOf("ReelViewerItemToolbarBinder.bindView"),
+    // Not SponsoredReelViewerItemToolbarBinder#bindView.
+    custom = { method, _ -> AccessFlags.STATIC.isSet(method.accessFlags) },
+)

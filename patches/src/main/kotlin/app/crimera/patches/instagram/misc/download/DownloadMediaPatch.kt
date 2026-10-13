@@ -54,6 +54,8 @@ val downloadMediaPatch =
             hookReelOverflowMenuButton,
             // Unnamed, so it is not selectable: adds the download button to feed posts.
             feedDownloadButtonPatch,
+            reelDownloadButtonPatch,
+            storyDownloadButtonPatch,
         )
         compatibleWith(COMPATIBILITY_INSTAGRAM)
 

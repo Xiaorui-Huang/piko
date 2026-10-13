@@ -7,6 +7,7 @@
 package app.morphe.extension.instagram.patches.download;
 
 import android.content.Context;
+import android.view.HapticFeedbackConstants;
 
 import com.instagram.common.session.UserSession;
 
@@ -38,7 +39,8 @@ public final class FeedDownloadClickFunction implements Function1<Object, Object
 
     @Override
     public Object invoke(Object clickEvent) {
-        DownloadUtils.downloadPost(
+        DownloadButtonActions.haptic(DownloadButtonActions.getView(clickEvent), HapticFeedbackConstants.VIRTUAL_KEY);
+        DownloadUtils.downloadCurrentMedia(
                 context,
                 userSession,
                 DownloadUtils.extractMedia(mediaSource),
