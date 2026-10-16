@@ -21,6 +21,8 @@ import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.string
 import app.morphe.patcher.util.smali.ExternalLabel
+import app.morphe.util.getReference
+import app.morphe.util.getReference
 import app.morphe.util.indexOfFirstInstructionOrThrow
 import app.morphe.util.indexOfFirstInstructionReversedOrThrow
 import app.morphe.util.p0Register
@@ -30,6 +32,8 @@ import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.WideLiteralInstruction
+import com.android.tools.smali.dexlib2.iface.reference.FieldReference
+import com.android.tools.smali.dexlib2.iface.reference.StringReference
 
 /** Kotlin event handler type the UFI `ON_CLICK` setter takes. */
 private const val FUNCTION1_DESCRIPTOR = "Lkotlin/jvm/functions/Function1;"
@@ -47,6 +51,10 @@ private const val CLICK_HANDLER_DESCRIPTOR =
     "Lapp/morphe/extension/instagram/patches/download/FeedDownloadClickFunction;"
 private const val CLICK_HANDLER_CONSTRUCTOR =
     "$CLICK_HANDLER_DESCRIPTOR-><init>($CONTEXT_DESCRIPTOR$USER_SESSION_DESCRIPTOR$OBJECT_DESCRIPTOR)V"
+private const val LONG_CLICK_HANDLER_DESCRIPTOR =
+    "Lapp/morphe/extension/instagram/patches/download/FeedDownloadLongClickFunction;"
+private const val LONG_CLICK_HANDLER_CONSTRUCTOR =
+    "$LONG_CLICK_HANDLER_DESCRIPTOR-><init>($CONTEXT_DESCRIPTOR$USER_SESSION_DESCRIPTOR$OBJECT_DESCRIPTOR)V"
 private const val FEED_DOWNLOAD_ENABLED = "$DOWNLOAD_UTILS_DESCRIPTOR->isFeedDownloadButtonEnabled()Z"
 
 /**
@@ -120,6 +128,35 @@ internal fun injectLithoDownloadButton(
     val idSetter = matches[4].methodReference
     val onClickIndex = matches[5].index
     val onClickSetter = matches[5].methodReference
+
+    // The long click setter sits beside ON_CLICK's and differs only in the prop enum constant it
+    // stores. That constant is the field assigned right after the "ON_LONG_CLICK" name is constructed.
+    val longClickProp =
+        requireOne(
+            "ON_LONG_CLICK prop constant",
+            buildList {
+                patchContext.classDefForEach { classDef ->
+                    val clinit = classDef.methods.firstOrNull { it.name == "<clinit>" } ?: return@classDefForEach
+                    val body = clinit.implementation?.instructions?.toList() ?: return@classDefForEach
+                    val nameIndex =
+                        body.indexOfFirst { it.getReference<StringReference>()?.string == "ON_LONG_CLICK" }
+                    if (nameIndex < 0) return@classDefForEach
+                    body.drop(nameIndex).firstOrNull { it.opcode == Opcode.SPUT_OBJECT }
+                        ?.getReference<FieldReference>()?.let { add(it) }
+                }
+            },
+        )
+    val longClickSetter =
+        requireOne(
+            "long click setter",
+            patchContext.classDefBy(onClickSetter.definingClass).methods.filter { method ->
+                method.returnType == onClickSetter.returnType &&
+                    method.parameterTypes.map { it.toString() } == onClickSetter.parameterTypes.map { it.toString() } &&
+                    method.implementation?.instructions?.any {
+                        it.opcode == Opcode.SGET_OBJECT && it.getReference<FieldReference>() == longClickProp
+                    } == true
+            },
+        )
     val nodeRegister = matches[5].instruction.registersUsed.first()
     val dimensionAttribute = matches[6].getInstruction<WideLiteralInstruction>().wideLiteral.toInt()
     val themeAccessor = matches[7].methodReference
@@ -196,7 +233,7 @@ internal fun injectLithoDownloadButton(
     val excluded =
         (builder.parameterBlock() + nodeRegister + stateRegister + listRegister + call + wrapperCall +
             sources + listOfNotNull(wrapperFlagSource)).distinct()
-    val scratch = builder.reserveFreeRegisters(onClickIndex, 7, maximum = 255, excluded = excluded)
+    val scratch = builder.reserveFreeRegisters(onClickIndex, 8, maximum = 255, excluded = excluded)
     val flag = scratch[0] // also the constant staging register
     val handler = scratch[1]
     val context = scratch[2]
@@ -204,6 +241,7 @@ internal fun injectLithoDownloadButton(
     val scaleType = scratch[4]
     val dimension = scratch[5]
     val tint = scratch[6]
+    val longHandler = scratch[7]
 
     builder.addInstructionsWithLabels(
         onClickIndex,
@@ -221,6 +259,10 @@ internal fun injectLithoDownloadButton(
             ${moveObject(call[4], stateRegister)}
             invoke-direct/range ${registerRange(call[1], call[4])}, $CLICK_HANDLER_CONSTRUCTOR
 
+            new-instance v$longHandler, $LONG_CLICK_HANDLER_DESCRIPTOR
+            ${moveObject(call[1], longHandler)}
+            invoke-direct/range ${registerRange(call[1], call[4])}, $LONG_CLICK_HANDLER_CONSTRUCTOR
+
             const v$flag, -1
             ${moveObject(call[1], nodeRegister)}
             ${moveInt(call[2], flag)}
@@ -236,6 +278,11 @@ internal fun injectLithoDownloadButton(
             ${moveObject(call[1], node)}
             ${moveObject(call[2], handler)}
             invoke-static/range ${registerRange(call[1], call[2])}, $onClickSetter
+            move-result-object v$node
+
+            ${moveObject(call[1], node)}
+            ${moveObject(call[2], longHandler)}
+            invoke-static/range ${registerRange(call[1], call[2])}, $longClickSetter
             move-result-object v$node
 
             sget-object v$scaleType, $CENTER_SCALE_TYPE

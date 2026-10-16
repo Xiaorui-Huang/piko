@@ -198,6 +198,28 @@ public class DownloadUtils {
     }
 
 
+    /** Downloads the media at [position] without asking, whatever the direct download setting. */
+    public static void downloadCurrentMedia(Context context, UserSession userSession, Object mediaObject, int position) {
+        try {
+            position = position < 1 ? 0 : position;
+            downloadMedia(context, new MediaData(mediaObject, userSession), position, MediaType.ANY);
+        } catch (Exception e) {
+            PikoUtils.logger(e);
+            Logger.printException(() -> "Error at downloadCurrentMedia", e);
+        }
+    }
+
+    /** Shows the download options for the media at [position], whatever the direct download setting. */
+    public static void showDownloadMenu(Context context, UserSession userSession, Object mediaObject, int position) {
+        try {
+            position = position < 1 ? 0 : position;
+            downloadDialogBox(context, new MediaData(mediaObject, userSession), position);
+        } catch (Exception e) {
+            PikoUtils.logger(e);
+            Logger.printException(() -> "Error at showDownloadMenu", e);
+        }
+    }
+
     public static void downloadPost(Context context,  UserSession userSession, Object mediaObject, int position) {
         try {
             boolean ENABLE_DIRECT_DOWNLOAD = Pref.enableDirectDownload() && SettingsStatus.downloadMedia;
@@ -392,8 +414,13 @@ public class DownloadUtils {
             if (button == null) {
                 button = createFeedDownloadButton(context, saveButton, buttonGroup);
             }
+            // Tap downloads the current media, long press shows the download options.
             button.setOnClickListener(
-                    v -> downloadPost(context, userSession, media, currentMediaIndex(mediaState)));
+                    v -> DownloadButtonActions.tap(v, userSession, media, currentMediaIndex(mediaState)));
+            button.setOnLongClickListener(v -> {
+                DownloadButtonActions.longPress(v, userSession, media, currentMediaIndex(mediaState));
+                return true;
+            });
         } catch (Exception e) {
             Logger.printException(() -> "addFeedDownloadButton failure", e);
         }
