@@ -49,9 +49,14 @@ public class MediaDownloader {
     private final LinkedBlockingQueue<DownloadRequest> queue = new LinkedBlockingQueue<>();
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
+    private final boolean showProgressToasts;
     private boolean isDownloading = false;
 
     public MediaDownloader(Context context) {
+        this(context, true);
+    }
+
+    public MediaDownloader(Context context, boolean showProgressToasts) {
         Context resolvedContext = context != null ? context : Utils.getContext();
         if (resolvedContext == null) {
             throw new IllegalStateException("Download context is unavailable");
@@ -63,6 +68,7 @@ public class MediaDownloader {
         if (notificationManager == null) {
             throw new IllegalStateException("Notification service is unavailable");
         }
+        this.showProgressToasts = showProgressToasts;
         createNotificationChannel();
     }
 
@@ -129,7 +135,7 @@ public class MediaDownloader {
             String downloadStartString = ExtensionStrings.DOWNLOAD_ONGOING + request.fileName;
             builder.setContentTitle(downloadStartString);
             notificationManager.notify(notificationId, builder.build());
-            showToast(downloadStartString);
+            if (showProgressToasts) showToast(toastLine("\u2B07\uFE0F ", toastText(request)));
             HttpURLConnection conn = null;
             try {
                 URL url = new URL(request.url);
@@ -168,6 +174,7 @@ public class MediaDownloader {
 
             final int finalNotificationId = notificationId;
             final String finalFileName = request.fileName;
+            final String finalToastText = toastText(request);
             final String downloadCompletedString = ExtensionStrings.DOWNLOAD_COMPLETED + finalFileName;
 
             mainHandler.post(() -> {
@@ -179,9 +186,11 @@ public class MediaDownloader {
                 // Force post the update layout
                 notificationManager.notify(finalNotificationId, builder.build());
 
-                try {
-                    PikoUtils.toast(downloadCompletedString);
-                } catch (Exception ignored) {}
+                if (showProgressToasts) {
+                    try {
+                        PikoUtils.toast(toastLine("\u2705 ", finalToastText));
+                    } catch (Exception ignored) {}
+                }
             });
         } catch (Exception e) {
             if (!downloadCompleted && outputDocumentUri != null) {
@@ -262,6 +271,28 @@ public class MediaDownloader {
                 }
                 output.flush();
             }
+        }
+    }
+
+    private static String toastText(DownloadRequest request) {
+        return request.toastLabel != null && !request.toastLabel.isEmpty() ? request.toastLabel : request.fileName;
+    }
+
+    /** Toast text that always fits on one line: the file name is middle-ellipsized (keeps the extension). */
+    private String toastLine(String prefix, String fileName) {
+        try {
+            float density = context.getResources().getDisplayMetrics().density;
+            float screenWidth = context.getResources().getDisplayMetrics().widthPixels;
+            // The system toast (with its app icon) gives the text only ~60% of the screen; stay well under.
+            float available = screenWidth * 0.58f;
+            android.text.TextPaint paint = new android.text.TextPaint();
+            paint.setTextSize(16 * context.getResources().getConfiguration().fontScale * density);
+            float room = available - paint.measureText(prefix);
+            if (room <= 0) return prefix.trim();
+            return prefix + android.text.TextUtils.ellipsize(
+                    fileName.replace('\n', ' '), paint, room, android.text.TextUtils.TruncateAt.MIDDLE);
+        } catch (Exception e) {
+            return prefix + fileName;
         }
     }
 
