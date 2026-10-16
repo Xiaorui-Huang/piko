@@ -111,7 +111,7 @@ internal object GetMoreExtendedDataExtensionFingerprint : Fingerprint(
 
 internal object GetPostTypeExtensionFingerprint : Fingerprint(
     definingClass = EXTENSION_CLASS_DESCRIPTOR,
-    name = "getPostType",
+    name = "getPostTypeKey",
 )
 
 // -----------------------------------
