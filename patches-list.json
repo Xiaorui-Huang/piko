@@ -1,6 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "3.10.0",
+  "version": "3.10.0-personal.1",
   "patches": [
     {
       "name": "Add ability to copy media link",
@@ -1590,6 +1590,8 @@
         "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
+        "BytecodePatch",
+        "BytecodePatch",
         "BytecodePatch"
       ],
       "compatiblePackages": [
@@ -2635,8 +2637,7 @@
       "description": "Hides save buttons on posts and reels",
       "default": true,
       "dependencies": [
-        "BytecodePatch",
-        "ResourcePatch"
+        "BytecodePatch"
       ],
       "compatiblePackages": [
         {
@@ -2929,6 +2930,68 @@
       "options": []
     },
     {
+      "name": "Log Reels to view history",
+      "description": "Records each Reel to Piko's view history as it is shown in the Reels viewer.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instagram.android",
+          "name": "Instagram",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FC483C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "447.0.0.55.81",
+              "versionCodes": {
+                "ARM64_V8A": 385311895
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Log feed posts to view history",
+      "description": "Records each feed post to Piko's view history once it has been on screen.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instagram.android",
+          "name": "Instagram",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FC483C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "447.0.0.55.81",
+              "versionCodes": {
+                "ARM64_V8A": 385311895
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Log server response",
       "description": "Log json responses received from server",
       "default": true,
@@ -2947,6 +3010,37 @@
             {
               "version": "12.19.1-release.0",
               "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Log stories to view history",
+      "description": "Records each story item to Piko's view history as it is shown in the story viewer.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch",
+        "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instagram.android",
+          "name": "Instagram",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FC483C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "447.0.0.55.81",
+              "versionCodes": {
+                "ARM64_V8A": 385311895
+              },
               "isExperimental": false,
               "minSdk": null,
               "description": null
@@ -4045,6 +4139,37 @@
         "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.instagram.android",
+          "name": "Instagram",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FC483C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "447.0.0.55.81",
+              "versionCodes": {
+                "ARM64_V8A": 385311895
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "View history",
+      "description": "Adds a History settings section to browse the feed posts, Reels and Stories you've viewed.",
+      "default": true,
+      "dependencies": [
+        "BytecodePatch",
+        "ResourcePatch"
       ],
       "compatiblePackages": [
         {

@@ -69,7 +69,7 @@ To patch with Twitter/X version 11.88 to 12.4, you must include patches from ano
 ## ⚙️ Patch Details
 
 <!-- PATCHES_START -->
-> **[v3.10.0](https://github.com/crimera/piko/releases/tag/v3.10.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;137 patches total
+> **[v3.10.0-personal.1](https://github.com/Xiaorui-Huang/piko/releases/tag/v3.10.0-personal.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`personal`&nbsp;&nbsp;•&nbsp;&nbsp;141 patches total
 <details>
 <summary>📦 Twitter&nbsp;&nbsp;•&nbsp;&nbsp;75 patches</summary>
 <br>
@@ -160,7 +160,7 @@ To patch with Twitter/X version 11.88 to 12.4, you must include patches from ano
 </details>
 
 <details>
-<summary>📦 Instagram&nbsp;&nbsp;•&nbsp;&nbsp;62 patches</summary>
+<summary>📦 Instagram&nbsp;&nbsp;•&nbsp;&nbsp;66 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -212,6 +212,9 @@ To patch with Twitter/X version 11.88 to 12.4, you must include patches from ano
 | [Improve image viewing](#improve-image-viewing) | Fetches max resolution images from server. |  |
 | [Inbox lock](#inbox-lock) | Asks for your fingerprint, face or screen lock before the inbox is shown. |  |
 | [Limit feed to following profiles](#limit-feed-to-following-profiles) | Filters the home feed to display only content from profiles you follow. |  |
+| [Log Reels to view history](#log-reels-to-view-history) | Records each Reel to Piko's view history as it is shown in the Reels viewer. |  |
+| [Log feed posts to view history](#log-feed-posts-to-view-history) | Records each feed post to Piko's view history once it has been on screen. |  |
+| [Log stories to view history](#log-stories-to-view-history) | Records each story item to Piko's view history as it is shown in the story viewer. |  |
 | [Loop story](#loop-story) | Replay the current story when it ends |  |
 | [Make ephemeral media permanent](#make-ephemeral-media-permanent) | Changes unexpired view once, view twice media to permanent view. |  |
 | [Mark chat as read manually](#mark-chat-as-read-manually) | Adds option to mark a thread aka message as read manually |  |
@@ -229,6 +232,7 @@ To patch with Twitter/X version 11.88 to 12.4, you must include patches from ano
 | [Unlock developer options](#unlock-developer-options) | Unlocks developer option by long pressing home icon |  |
 | [Unlock employee options](#unlock-employee-options) | Unlocks all options using by employee for debugging |  |
 | [View DMs anonymously](#view-dms-anonymously) |  |  |
+| [View history](#view-history) | Adds a History settings section to browse the feed posts, Reels and Stories you've viewed. |  |
 | [View live anonymously](#view-live-anonymously) |  |  |
 | [View stories anonymously](#view-stories-anonymously) |  |  |
 | [View story mentions](#view-story-mentions) | Add option to view visible and hidden story mentions. |  |
